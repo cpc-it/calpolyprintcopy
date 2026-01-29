@@ -4,13 +4,13 @@ import { gql, useQuery } from '@apollo/client';
 import { getNextStaticProps } from '@faustwp/core';
 import {
   Button,
+  Footer,
   Header,
   Main,
   NavigationMenu,
   SearchInput,
   SearchResults,
   SEO,
-  SearchRecommendations,
 } from 'components';
 import { BlogInfoFragment } from 'fragments/GeneralSettings';
 import { useState } from 'react';
@@ -28,6 +28,9 @@ export default function Page() {
   const { title: siteTitle, description: siteDescription } =
     pageData.generalSettings;
   const primaryMenu = pageData.headerMenuItems.nodes ?? [];
+  const footerMenu = pageData.footerMenuItems?.nodes ?? [];
+  const navTwo = pageData.footerTertiaryMenuItems?.nodes ?? [];
+  const resources = pageData.resourcesFooterMenuItems?.nodes ?? [];
   const categories = pageData.categories.nodes;
 
   const {
@@ -58,11 +61,11 @@ export default function Page() {
       <Main>
         <div className={styles['search-header-pane']}>
           <div className="container small">
-            <h2 className={styles['search-header-text']}>
+            <h1 className={styles['search-header-text']}>
               {searchQuery && !searchResultsLoading
                 ? `Showing results for "${searchQuery}"`
                 : `Search`}
-            </h2>
+            </h1>
             <SearchInput
               value={searchQuery}
               onChange={(newValue) => setSearchQuery(newValue)}
@@ -82,6 +85,7 @@ export default function Page() {
               ({ node }) => node
             )}
             isLoading={searchResultsLoading}
+            searchQuery={searchQuery}
           />
 
           {searchResultsData?.contentNodes?.pageInfo?.hasNextPage && (
@@ -101,11 +105,15 @@ export default function Page() {
             </div>
           )}
 
-          {!searchResultsLoading && searchResultsData === undefined && (
-            <SearchRecommendations categories={categories} />
-          )}
         </div>
       </Main>
+
+      <Footer
+        siteTitle={siteTitle}
+        menuItems={footerMenu}
+        navTwoMenuItems={navTwo}
+        resourcesMenuItems={resources}
+      />
     </>
   );
 }
@@ -114,6 +122,8 @@ Page.variables = () => {
   return {
     headerLocation: MENUS.PRIMARY_LOCATION,
     footerLocation: MENUS.FOOTER_LOCATION,
+    footerTertiaryLocation: MENUS.FOOTER_TERTIARY_LOCATION,
+    resourcesFooterLocation: MENUS.RESOURCES_FOOTER_LOCATION,
   };
 };
 
@@ -123,6 +133,8 @@ Page.query = gql`
   query GetPageData(
     $headerLocation: MenuLocationEnum
     $footerLocation: MenuLocationEnum
+    $footerTertiaryLocation: MenuLocationEnum
+    $resourcesFooterLocation: MenuLocationEnum
   ) {
     generalSettings {
       ...BlogInfoFragment
@@ -133,6 +145,20 @@ Page.query = gql`
       }
     }
     footerMenuItems: menuItems(where: { location: $footerLocation }) {
+      nodes {
+        ...NavigationMenuItemFragment
+      }
+    }
+    footerTertiaryMenuItems: menuItems(
+      where: { location: $footerTertiaryLocation }
+    ) {
+      nodes {
+        ...NavigationMenuItemFragment
+      }
+    }
+    resourcesFooterMenuItems: menuItems(
+      where: { location: $resourcesFooterLocation }
+    ) {
       nodes {
         ...NavigationMenuItemFragment
       }

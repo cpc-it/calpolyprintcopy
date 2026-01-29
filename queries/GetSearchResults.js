@@ -15,6 +15,12 @@ export const GetSearchResults = gql`
           ... on NodeWithExcerpt {
             excerpt
           }
+          ... on Page {
+            content
+          }
+          ... on Post {
+            content
+          }
         }
       }
       pageInfo {

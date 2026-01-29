@@ -8,7 +8,11 @@ Renders an array of search results nodes. If the results are loading it render a
 import { SearchResults } from 'components';
 
 const MySearchResults = () => (
-  <SearchResults searchResults={searchResults} isLoading={isLoading} />
+  <SearchResults
+    searchResults={searchResults}
+    isLoading={isLoading}
+    searchQuery={searchQuery}
+  />
 );
 ```
 
@@ -28,4 +32,11 @@ Required: No
 Whether the search results are loading.
 
 Type: `Boolean`
+Required: No
+
+### searchQuery
+
+The current search query string used for snippet highlighting.
+
+Type: `String`
 Required: No

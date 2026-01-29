@@ -18,6 +18,17 @@ $color-grey: #777;
   margin-bottom: 2rem;
 }
 
+.excerpt {
+  color: var(--color-black);
+  line-height: 1.6;
+}
+
+.excerpt mark {
+  background: #fff2a8;
+  color: inherit;
+  padding: 0 0.2rem;
+}
+
 .no-results {
   text-align: center;
   margin-top: 8rem;
