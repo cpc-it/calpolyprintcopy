@@ -20,6 +20,40 @@
   }
 }
 
+@media (max-width: $breakpoint-small) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .quoteIconWrap {
+    width: 88px;
+    height: 88px;
+    padding: 1.25rem;
+    margin-right: 0;
+  }
+
+  .quote-icon {
+    font-size: 2.6rem;
+  }
+
+  .slide-content {
+    p {
+      font-size: 1.55rem;
+      line-height: 1.6;
+    }
+  }
+
+  .testimonials {
+    padding: 8rem 0;
+  }
+
+  .testimonial {
+    padding: 3rem 2.4rem;
+  }
+}
+
 .arrow {
   cursor: pointer;
   font-size: 2.75rem;

@@ -143,6 +143,109 @@ h2.intro {
   }
 }
 
+.wp-block-media-text.media-text-animate {
+  .wp-block-media-text__media,
+  .wp-block-media-text__content {
+    opacity: 0;
+    transform: translateX(40px);
+    transition: transform 850ms ease, opacity 850ms ease;
+    will-change: transform, opacity;
+  }
+
+  .wp-block-media-text__media {
+    transform: translateX(-40px);
+  }
+
+  &.media-text-right {
+    .wp-block-media-text__media {
+      transform: translateX(40px);
+    }
+
+    .wp-block-media-text__content {
+      transform: translateX(-40px);
+    }
+  }
+
+  &.is-in-view {
+    .wp-block-media-text__media,
+    .wp-block-media-text__content {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+}
+
+@media (max-width: $breakpoint-small) {
+  h2.intro {
+    font-size: 3.2rem !important;
+    margin: 3rem 0 1.5rem 0 !important;
+    padding-bottom: 1.5rem;
+  }
+
+  .wp-block-media-text.media-text-animate {
+    .wp-block-media-text__media,
+    .wp-block-media-text__content {
+      transform: translateY(24px);
+      transition: transform 850ms ease, opacity 850ms ease;
+    }
+
+    &.is-in-view {
+      .wp-block-media-text__media,
+      .wp-block-media-text__content {
+        transform: translateY(0);
+      }
+    }
+  }
+
+  .wp-block-media-text {
+    margin: 3rem 0;
+  }
+
+  .wp-block-media-text__media {
+    margin: 0;
+  }
+
+  .wp-block-media-text__media img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .wp-block-media-text__content {
+    padding: 1.5rem 0 0 !important;
+  }
+
+  .wp-block-media-text__content h2,
+  .wp-block-media-text__content h3 {
+    font-size: 2.6rem;
+    line-height: 1.2;
+    margin: 1.5rem 0 1rem 0;
+  }
+
+  .wp-block-media-text__content p {
+    font-size: 1.5rem;
+    line-height: 1.55;
+  }
+
+  .wp-block-media-text__content .wp-element-button,
+  .wp-block-media-text__content .wp-block-button__link {
+    width: 100%;
+    justify-content: center;
+    padding: 0.85rem 2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-block-media-text.media-text-animate {
+    .wp-block-media-text__media,
+    .wp-block-media-text__content {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+}
+
 
 
 @media (min-width: $breakpoint-small) {

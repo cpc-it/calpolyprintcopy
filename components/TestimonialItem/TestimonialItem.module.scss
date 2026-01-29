@@ -26,3 +26,15 @@
   font-style: italic;
   color: #a9975d;
 }
+
+@media (max-width: $breakpoint-small) {
+  .content {
+    padding-top: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .author {
+    font-size: 1.4rem;
+    line-height: 1.4;
+  }
+}

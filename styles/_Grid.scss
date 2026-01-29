@@ -476,6 +476,22 @@
 
 }
 
+@media (max-width: $breakpoint-small) {
+  .green-image-right,
+  .white-image-left,
+  .white-image-right,
+  .yellow-image-left,
+  .yellow-image-right,
+  .bg-green,
+  .bg-white,
+  .bg-yellow,
+  .bg-green-dark,
+  .bg-blue,
+  .dark-blue-image-left {
+    padding: 3rem 0;
+  }
+}
+
 
 
 
