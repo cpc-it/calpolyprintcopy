@@ -31,7 +31,6 @@ export default function Page() {
   const footerMenu = pageData.footerMenuItems?.nodes ?? [];
   const navTwo = pageData.footerTertiaryMenuItems?.nodes ?? [];
   const resources = pageData.resourcesFooterMenuItems?.nodes ?? [];
-  const categories = pageData.categories.nodes;
 
   const {
     data: searchResultsData,
@@ -161,13 +160,6 @@ Page.query = gql`
     ) {
       nodes {
         ...NavigationMenuItemFragment
-      }
-    }
-    categories {
-      nodes {
-        databaseId
-        uri
-        name
       }
     }
   }
