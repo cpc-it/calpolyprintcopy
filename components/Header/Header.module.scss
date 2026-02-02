@@ -387,7 +387,7 @@
    MOBILE NAV (accordion)
    =========================== */
 
-.mobile-nav { display: none; }               /* hidden on desktop */
+.mobile-nav { display: none; } /* hidden on desktop */
 
 @media (max-width: 767px) {
   .primary-navigation { display: none !important; } /* hide desktop menu */
@@ -395,7 +395,7 @@
 
   .mobile-nav .mnav__wrap {
     background: #fff;
-    border-top: 1px solid rgba(0,0,0,.06);
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
   }
 
   .mobile-nav.open .mnav__wrap { display: block; }
@@ -418,17 +418,26 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    min-height: 52px;
-    padding: 0 1rem;
+    min-height: 56px;
+    padding: 0.25rem 1.25rem;
     background: #fff;
     border: 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
     text-align: left;
     font-weight: 600;
     color: var(--color-primary);
     text-decoration: none;
+    -webkit-appearance: none;
+    appearance: none;
+    box-shadow: none;
+    transition: background-color 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
   }
 
-  .mnav__link { /* anchor variant shares same visuals */ }
+  .mnav__row:focus-visible {
+    outline: 2px solid rgba(0, 0, 0, 0.2);
+    outline-offset: -2px;
+  }
 
   .mnav__label {
     display: inline-block;
@@ -436,150 +445,47 @@
   }
 
   .mnav__caret {
-    transition: transform .2s ease;
+    display: inline-block;
+    transition: transform 0.2s ease;
+    transform-origin: center;
   }
 
-  .mnav__li.open .mnav__caret {
+  .mnav__li.open > .mnav__row .mnav__caret {
     transform: rotate(-180deg);
   }
 
-  /* collapsible panel (holds "Overview" + children) */
+  /* collapsible panel (holds children) */
   .mnav__panel {
     max-height: 0;
     overflow: hidden;
     opacity: 0;
     visibility: hidden;
-    transition: max-height .25s ease, opacity .2s ease, visibility .2s ease;
+    transition: max-height 0.25s ease, opacity 0.2s ease, visibility 0.2s ease;
     background: #fff;
-    border-top: 1px solid rgba(0,0,0,.04);
   }
 
   .mnav__panel.open {
-    max-height: 1000px;
+    max-height: 700px;
     opacity: 1;
     visibility: visible;
   }
 
-  .mnav__overview {
-    display: block;
-    padding: .75rem 1rem .5rem 1rem;
-    color: var(--color-primary);
-    font-weight: 500;
-    text-decoration: none;
-  }
-
-  /* child list inside panel */
   .mnav__panel .mnav__ul {
-    padding-bottom: .5rem;
+    padding-bottom: 0.5rem;
   }
 
   .mnav__panel .mnav__row {
-    min-height: 46px;
+    min-height: 48px;
+    font-weight: 500;
+    border-bottom: 0;
+  }
+
+  .mnav__panel .mnav__label {
+    padding-left: calc(var(--indent, 0) * 16px + 12px);
   }
 }
 
 /* Keep desktop behavior untouched */
 @media (min-width: $breakpoint-small) {
   .mobile-nav { display: none !important; }
-}
-
-/* Add below existing .mnav__panel.open rule */
-
-.mnav__panel .mnav__panel {
-  border-top: 1px solid rgba(0,0,0,.05);
-  background: #fafafa;
-}
-
-.mnav__panel .mnav__row {
-  font-weight: 500;
-  min-height: 44px;
-}
-
-.mnav__panel .mnav__label {
-  padding-left: calc(var(--indent, 0) * 16px + 16px);
-}
-
-/* optional: subtle shading per depth */
-.mnav__li:nth-child(odd) .mnav__panel { background: #fff; }
-.mnav__li:nth-child(even) .mnav__panel { background: #f9f9f9; }
-
-/* === Mobile caret + background fixes (drop-in) === */
-@media (max-width: 767px) {
-  /* Make sure the chevron can rotate */
-  .mnav__caret {
-    display: inline-block;
-    transition: transform .2s ease;
-    transform: rotate(0deg);
-    transform-origin: 50% 50%;
-  }
-
-  /* Stronger selector: rotate when the LI is open */
-  .mnav__li.open > .mnav__row .mnav__caret {
-    transform: rotate(-180deg);
-  }
-
-  /* Normalize backgrounds (buttons/links/panels) */
-  .mnav__row,
-  .mnav__link,
-  .mnav__panel {
-    background: #fff !important;
-  }
-
-  /* Remove native button styles that can tint on iOS */
-  .mnav__row {
-    -webkit-appearance: none;
-    appearance: none;
-    box-shadow: none !important;
-    border: 0;
-  }
-
-  /* Clean borders so you only have subtle separators */
-  .mnav__panel {
-    border-top: 1px solid rgba(0,0,0,.06);
-  }
-
-  /* Indentation stays but panel tinting is removed */
-  .mnav__panel .mnav__panel { background: #fff !important; }
-
-  /* If you added alternating shading earlier, neutralize it */
-  .mnav__li:nth-child(odd) .mnav__panel,
-  .mnav__li:nth-child(even) .mnav__panel {
-    background: #fff !important;
-  }
-}
-
-/* === Caret rotation: only rotate when its own submenu is open === */
-@media (max-width: 767px) {
-  /* make the icon rotatable */
-  .mnav__caret {
-    display: inline-block;
-    transition: transform .25s ease;
-    transform: rotate(0deg);
-    transform-origin: center;
-  }
-
-  /* rotate only when the button's direct panel sibling is open */
-  .mnav__row + .mnav__panel.open > .mnav__ul,
-  .mnav__row + .mnav__panel.open {
-    & ~ .mnav__caret {
-      transform: rotate(-180deg);
-    }
-  }
-
-  /* stronger and simpler fix—use the parent .open state but target only its own caret */
-  .mnav__li.open > .mnav__row .mnav__caret {
-    transform: rotate(-180deg);
-  }
-
-  /* reset deeper levels so their chevrons don't inherit rotation from ancestors */
-  .mnav__li.open .mnav__li:not(.open) > .mnav__row .mnav__caret {
-    transform: rotate(0deg);
-  }
-
-  /* clean white backgrounds for all nested panels */
-  .mnav__row,
-  .mnav__panel,
-  .mnav__link {
-    background: #fff !important;
-  }
 }
