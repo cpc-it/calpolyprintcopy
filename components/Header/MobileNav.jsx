@@ -1,77 +1,153 @@
-// MobileNav.jsx
 import Link from 'next/link';
-import { useState, useMemo } from 'react';
+import { useMemo, useState } from 'react';
+import { FaChevronDown, FaTimes } from 'react-icons/fa';
 import classNames from 'classnames/bind';
 
 import styles from './Header.module.scss';
 
 const cx = classNames.bind(styles);
 
-export default function MobileNav({ menuItems, className, children, onNavigate }) {
-  const [openIds, setOpenIds] = useState(new Set());
+function buildMenuTree(menuItems = []) {
+  const map = {};
+  const roots = [];
 
-  const toggle = (id) =>
+  menuItems.forEach((item) => {
+    map[item.id] = { ...item, children: [] };
+  });
+
+  menuItems.forEach((item) => {
+    if (item.parentId && map[item.parentId]) {
+      map[item.parentId].children.push(map[item.id]);
+      return;
+    }
+
+    roots.push(map[item.id]);
+  });
+
+  return roots;
+}
+
+function getLinkProps(item) {
+  const target = item?.target === '_blank' ? '_blank' : undefined;
+  const rel = target ? 'noopener noreferrer' : undefined;
+
+  return {
+    href: item?.path ?? '#',
+    target,
+    rel,
+  };
+}
+
+export default function MobileNav({
+  menuItems,
+  className,
+  children,
+  isOpen,
+  onNavigate,
+  onClose,
+}) {
+  const [openIds, setOpenIds] = useState(() => new Set());
+  const tree = useMemo(() => buildMenuTree(menuItems), [menuItems]);
+
+  const toggle = (id) => {
     setOpenIds((prev) => {
       const next = new Set(prev);
       next.has(id) ? next.delete(id) : next.add(id);
       return next;
     });
+  };
 
-  const tree = useMemo(() => {
-    const map = {}; const roots = [];
-    (menuItems || []).forEach(i => (map[i.id] = { ...i, children: [] }));
-    (menuItems || []).forEach(i => {
-      if (i.parentId && map[i.parentId]) map[i.parentId].children.push(map[i.id]);
-      else roots.push(map[i.id]);
-    });
-    return roots;
-  }, [menuItems]);
+  const closeAll = () => setOpenIds(new Set());
 
-  const renderNodes = (items, depth = 0) =>
+  const handleNavigate = () => {
+    closeAll();
+    onNavigate?.();
+  };
+
+  const renderItems = (items, depth = 0) =>
     items.map((item) => {
-      const hasKids = item.children?.length > 0;
+      const hasChildren = item.children?.length > 0;
       const open = openIds.has(item.id);
-      const indentVar = { '--indent': `${depth}` };
-
-      if (hasKids) {
-        return (
-          <li key={item.id} className={cx('mnav__li', { open })} style={indentVar}>
-            <button
-              type="button"
-              className={cx('mnav__row')}
-              aria-expanded={open}
-              onClick={() => toggle(item.id)}
-            >
-              <span className={cx('mnav__label')}>{item.label}</span>
-              <i className={cx('fa-solid', 'fa-chevron-down', 'mnav__caret')} aria-hidden="true" />
-            </button>
-
-            <div className={cx('mnav__panel', { open })}>
-              {/* <Link href={item.path ?? '#'} className={cx('mnav__overview')} onClick={onNavigate}>
-                Overview
-              </Link> */}
-              <ul className={cx('mnav__ul')}>{renderNodes(item.children, depth + 1)}</ul>
-            </div>
-          </li>
-        );
-      }
 
       return (
-        <li key={item.id} className={cx('mnav__li')} style={indentVar}>
-          <Link href={item.path ?? '#'} className={cx('mnav__row', 'mnav__link')} onClick={onNavigate}>
-            <span className={cx('mnav__label')}>{item.label}</span>
-          </Link>
+        <li
+          key={item.id}
+          className={cx('mobile-item', { open })}
+          style={{ '--mobile-depth': depth }}
+        >
+          {hasChildren ? (
+            <>
+              <div className={cx('mobile-row')}>
+                <Link
+                  {...getLinkProps(item)}
+                  className={cx('mobile-link', 'mobile-parent-link')}
+                  onClick={handleNavigate}
+                >
+                  {item.label}
+                </Link>
+                <button
+                  type="button"
+                  className={cx('mobile-submenu-toggle')}
+                  onClick={() => toggle(item.id)}
+                  aria-expanded={open}
+                  aria-controls={`mobile-submenu-${item.id}`}
+                  aria-label={`${open ? 'Collapse' : 'Expand'} ${item.label}`}
+                >
+                  <FaChevronDown className={cx('mobile-submenu-icon')} />
+                </button>
+              </div>
+
+              <ul
+                id={`mobile-submenu-${item.id}`}
+                className={cx('mobile-submenu')}
+                hidden={!open}
+              >
+                {renderItems(item.children, depth + 1)}
+              </ul>
+            </>
+          ) : (
+            <Link
+              {...getLinkProps(item)}
+              className={cx('mobile-link')}
+              onClick={handleNavigate}
+            >
+              {item.label}
+            </Link>
+          )}
         </li>
       );
     });
 
   return (
-    <nav className={className} aria-label="Mobile menu">
-      <div className={cx('mnav__wrap')}>
-        <ul className={cx('mnav__ul')}>
-          {renderNodes(tree)}
-          {children}
+    <nav
+      id="mobile-navigation"
+      className={cx('mobile-nav', className, { open: isOpen })}
+      aria-label="Mobile menu"
+      hidden={!isOpen}
+    >
+      <button
+        type="button"
+        className={cx('mobile-backdrop')}
+        aria-label="Close menu"
+        onClick={onClose}
+      />
+      <div className={cx('mobile-nav-inner')}>
+        <div className={cx('mobile-nav-header')}>
+          <button
+            type="button"
+            className={cx('mobile-close')}
+            aria-label="Close menu"
+            onClick={onClose}
+          >
+            <FaTimes />
+          </button>
+        </div>
+        <ul className={cx('mobile-menu-list')}>
+          {renderItems(tree)}
         </ul>
+        <div className={cx('mobile-nav-footer')}>
+          <ul className={cx('mobile-menu-list')}>{children}</ul>
+        </div>
       </div>
     </nav>
   );

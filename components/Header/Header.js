@@ -1,9 +1,10 @@
 // Header.jsx
 import { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames/bind';
-import { FaBars, FaSearch } from 'react-icons/fa';
+import { FaBars, FaSearch, FaTimes } from 'react-icons/fa';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 import { NavigationMenu, SkipNavigationLink } from '../';
 
@@ -24,6 +25,7 @@ function useIsMobile(bp = 767) {
 }
 
 export default function Header({ className, menuItems }) {
+  const router = useRouter();
   const [isNavShown, setIsNavShown] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const isMobile = useIsMobile(767);
@@ -39,16 +41,34 @@ export default function Header({ className, menuItems }) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    setIsNavShown(false);
+  }, [router.asPath]);
+
+  useEffect(() => {
+    if (!isMobile) {
+      setIsNavShown(false);
+      document.body.style.removeProperty('overflow');
+      return undefined;
+    }
+
+    if (isNavShown) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.removeProperty('overflow');
+    }
+
+    return () => {
+      document.body.style.removeProperty('overflow');
+    };
+  }, [isMobile, isNavShown]);
+
   return (
     <header className={headerClasses}>
-
       <SkipNavigationLink />
 
       <div className={headerContentClasses}>
         <div className={cx('bar')}>
-
-          {/* <a href="/" className={cx('titleName')}>Cal Poly Print &amp; Copy</a> */}
-
           <div className={cx('logo')}>
             <Link href="/" title="Home">
               <Image
@@ -64,23 +84,32 @@ export default function Header({ className, menuItems }) {
 
           <button
             type="button"
-            className={cx('nav-toggle')}
+            className={cx('nav-toggle', { open: isNavShown })}
             onClick={() => setIsNavShown(!isNavShown)}
-            aria-label="Toggle navigation"
+            aria-label={isNavShown ? 'Close navigation' : 'Open navigation'}
             aria-expanded={isNavShown}
+            aria-controls="mobile-navigation"
           >
-            <FaBars />
+            {isNavShown ? <FaTimes /> : <FaBars />}
           </button>
 
           {isMobile ? (
             <MobileNav
-              className={cx('mobile-nav', { open: isNavShown })}
+              isOpen={isNavShown}
+              className={cx('mobile-nav-shell')}
               menuItems={menuItems}
               onNavigate={() => setIsNavShown(false)}
+              onClose={() => setIsNavShown(false)}
             >
-              <li>
-                <Link href="/search" title="Search">
+              <li className={cx('mobile-item', 'mobile-utility-item')}>
+                <Link
+                  href="/search"
+                  title="Search"
+                  className={cx('mobile-link', 'mobile-utility-link')}
+                  onClick={() => setIsNavShown(false)}
+                >
                   <FaSearch title="Search" role="img" />
+                  <span>Search</span>
                 </Link>
               </li>
             </MobileNav>
@@ -92,7 +121,7 @@ export default function Header({ className, menuItems }) {
               ref={menuRef}
             >
               <li>
-                <Link href="/search" title="Search">
+                <Link href="/search" title="Search" className={cx('desktop-search-link')}>
                   <FaSearch title="Search" role="img" />
                 </Link>
               </li>
