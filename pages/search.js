@@ -13,12 +13,14 @@ import {
   SEO,
 } from 'components';
 import { BlogInfoFragment } from 'fragments/GeneralSettings';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { GetSearchResults } from 'queries/GetSearchResults';
 import styles from 'styles/pages/_Search.module.scss';
 import appConfig from 'app.config';
 
 export default function Page() {
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
 
   const { data: pageData } = useQuery(Page.query, {
@@ -47,9 +49,22 @@ export default function Page() {
     fetchPolicy: 'network-only',
   });
 
+  useEffect(() => {
+    if (!router.isReady) return;
+
+    const queryValue =
+      typeof router.query.q === 'string' ? router.query.q : '';
+
+    setSearchQuery((current) => (current === queryValue ? current : queryValue));
+  }, [router.isReady, router.query.q]);
+
   return (
     <>
-      <SEO title={siteTitle} description={siteDescription} />
+      <SEO
+        title={searchQuery ? `Search: ${searchQuery} - ${siteTitle}` : `Search - ${siteTitle}`}
+        description={siteDescription}
+        noindex
+      />
 
       <Header
         title={siteTitle}

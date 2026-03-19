@@ -27,14 +27,18 @@ export default function Page() {
     return <></>;
   }
 
-  const { title: siteTitle } = data?.generalSettings;
+  const { title: siteTitle, description: siteDescription } =
+    data?.generalSettings;
   const primaryMenu = data?.headerMenuItems?.nodes ?? [];
   const footerMenu = data?.footerMenuItems?.nodes ?? [];
   const postList = data.posts.edges.map((el) => el.node);
 
   return (
     <>
-      <SEO title={pageTitle(data?.generalSettings)} />
+      <SEO
+        title={pageTitle(data?.generalSettings, 'Latest Posts')}
+        description={siteDescription}
+      />
 
       <Header menuItems={primaryMenu} />
 

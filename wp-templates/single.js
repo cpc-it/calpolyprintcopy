@@ -12,7 +12,7 @@ import {
   SEO,
   TaxonomyTerms,
 } from 'components';
-import { pageTitle } from 'utilities';
+import { buildMetaDescription, pageTitle } from 'utilities';
 import { BlogInfoFragment } from 'fragments/GeneralSettings';
 
 export default function Component(props) {
@@ -25,7 +25,8 @@ export default function Component(props) {
     props?.data?.generalSettings;
   const primaryMenu = props?.data?.headerMenuItems?.nodes ?? [];
   const footerMenu = props?.data?.footerMenuItems?.nodes ?? [];
-  const { title, content, featuredImage, date, author } = props.data.post;
+  const { title, content, featuredImage, date, author, tags } = props.data.post;
+  const description = buildMetaDescription(content, siteDescription);
 
   return (
     <>
@@ -35,8 +36,14 @@ export default function Component(props) {
           title,
           props?.data?.generalSettings?.title
         )}
-        description={siteDescription}
+        description={description}
         imageUrl={featuredImage?.node?.sourceUrl}
+        type="article"
+        article={{
+          publishedTime: date,
+          authors: author?.node?.name ? [author.node.name] : undefined,
+          tags: tags?.edges?.map(({ node }) => node?.name).filter(Boolean),
+        }}
       />
       <Header
         title={siteTitle}

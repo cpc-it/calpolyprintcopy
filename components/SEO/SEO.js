@@ -26,14 +26,14 @@ import { useRouter } from 'next/router';
  */
 
 const DEFAULTS = {
-  siteName: 'Cal Poly Print &amp; Copy',
+  siteName: 'Cal Poly Print & Copy',
   twitterHandle: '@CalPolyPartners',
   themeColor: '#003831',
   locale: 'en_US',
   type: 'website',
   defaultTitle: 'Cal Poly Print &amp; Copy',
   defaultDescription: 'Official site for Cal Poly Print &amp; Copy.',
-  defaultImage: '/images/og-default.jpg',
+  defaultImage: '/static/banner.jpeg',
 };
 
 function toAbsoluteUrl(urlOrPath, base) {
@@ -51,6 +51,7 @@ export default function SEO({
   imageUrl,
   url,
   noindex = false,
+  nofollow = false,
   type = DEFAULTS.type,
   siteName = DEFAULTS.siteName,
   twitterHandle = DEFAULTS.twitterHandle,
@@ -75,7 +76,7 @@ export default function SEO({
     baseUrl
   );
 
-  const robots = noindex ? 'noindex, nofollow' : 'index, follow';
+  const robots = [noindex ? 'noindex' : 'index', nofollow ? 'nofollow' : 'follow'].join(', ');
 
   // Base Organization schema (safe default)
   const orgSchema = {
@@ -83,7 +84,7 @@ export default function SEO({
     '@type': 'Organization',
     name: siteName,
     url: baseUrl || canonical,
-    logo: toAbsoluteUrl('/images/logo.png', baseUrl),
+    logo: toAbsoluteUrl('/logo.png', baseUrl),
   };
 
   // Optional WebSite schema for Sitelinks Search
@@ -95,7 +96,7 @@ export default function SEO({
         name: siteName,
         potentialAction: {
           '@type': 'SearchAction',
-          target: `${baseUrl}/search?s={search_term_string}`,
+          target: `${baseUrl}/search?q={search_term_string}`,
           'query-input': 'required name=search_term_string',
         },
       }
@@ -124,7 +125,7 @@ export default function SEO({
             name: siteName,
             logo: {
               '@type': 'ImageObject',
-              url: toAbsoluteUrl('/images/logo.png', baseUrl),
+              url: toAbsoluteUrl('/logo.png', baseUrl),
             },
           },
         }

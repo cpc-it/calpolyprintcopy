@@ -31,6 +31,7 @@ export default function Archive(props) {
   const primaryMenu = data?.headerMenuItems?.nodes ?? [];
   const footerMenu = data?.footerMenuItems?.nodes ?? [];
   const postList = data.nodeByUri?.contentNodes?.edges.map((el) => el.node);
+  const archiveDescription = data?.nodeByUri?.description || siteDescription;
 
   return (
     <>
@@ -40,7 +41,7 @@ export default function Archive(props) {
           `${__typename}: ${name}`,
           siteTitle
         )}
-        description={siteDescription}
+        description={archiveDescription}
       />
       <Header
         title={siteTitle}

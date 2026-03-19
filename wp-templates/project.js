@@ -12,6 +12,7 @@ import {
   Main,
   SEO,
 } from 'components';
+import { buildMetaDescription } from 'utilities';
 import { BlogInfoFragment } from 'fragments/GeneralSettings';
 
 export default function Component(props) {
@@ -19,15 +20,18 @@ export default function Component(props) {
   if (props.loading) {
     return <>Loading...</>;
   }
-  const { title: siteTitle } = props?.data?.generalSettings;
+  const { title: siteTitle, description: siteDescription } =
+    props?.data?.generalSettings;
   const primaryMenu = props?.data?.headerMenuItems?.nodes ?? [];
   const footerMenu = props?.data?.footerMenuItems?.nodes ?? [];
   const { featuredImage } = props.data.project;
   const { title, summary, contentArea } = props.data.project.projectFields;
+  const description = buildMetaDescription(summary || contentArea, siteDescription);
   return (
     <>
       <SEO
         title={`${title} - ${props?.data?.generalSettings?.title}`}
+        description={description}
         imageUrl={featuredImage?.node?.sourceUrl}
       />
 

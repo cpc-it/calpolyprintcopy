@@ -2,7 +2,7 @@ import * as MENUS from 'constants/menus';
 
 import { gql } from '@apollo/client';
 import { BlogInfoFragment } from 'fragments/GeneralSettings';
-import { pageTitle } from 'utilities';
+import { buildMetaDescription, pageTitle } from 'utilities';
 
 import {
   Header,
@@ -79,12 +79,14 @@ export default function Component(props) {
     );
 
   const computedDescription =
-    s?.metaDesc || siteDescription || 'Official site for Cal Poly Partners.';
+    s?.metaDesc ||
+    buildMetaDescription(content, siteDescription) ||
+    'Official site for Cal Poly Print & Copy.';
 
   const computedImageUrl =
     s?.opengraphImage?.mediaItemUrl ||
     featuredImage?.node?.sourceUrl ||
-    '/images/og-default.jpg';
+    '/static/banner.jpeg';
 
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
   const computedCanonical =
@@ -93,6 +95,8 @@ export default function Component(props) {
 
   const ogType = s?.opengraphType || 'website';
   const ogSiteName = s?.opengraphSiteName || siteTitle;
+  const noindex = Boolean(s?.metaRobotsNoindex);
+  const nofollow = Boolean(s?.metaRobotsNofollow);
 
   return (
     <>
@@ -103,6 +107,8 @@ export default function Component(props) {
         url={computedCanonical}
         type={ogType}
         siteName={ogSiteName}
+        noindex={noindex}
+        nofollow={nofollow}
       />
 
       <Header
