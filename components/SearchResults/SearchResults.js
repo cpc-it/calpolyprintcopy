@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { FormatDate, LoadingSearchResult } from 'components';
+import { LoadingSearchResult } from 'components';
 import { FaSearch } from 'react-icons/fa';
 
 import styles from './SearchResults.module.scss';
@@ -126,12 +126,6 @@ export default function SearchResults({ searchResults, isLoading, searchQuery })
           <Link href={node.uri}>
             <h2 className={styles.title}>{node.title}</h2>
           </Link>
-
-          <div className={styles.meta}>
-            <time className={styles.date} dateTime={node.date}>
-              <FormatDate date={node.date} />
-            </time>
-          </div>
 
           <div
             className={styles.excerpt}
