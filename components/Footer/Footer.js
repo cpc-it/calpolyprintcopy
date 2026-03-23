@@ -68,6 +68,8 @@ export default function Footer({
                 <p>Robert E. Kennedy Library</p>
                 <p>1 Grand Ave., Building 15</p>
                 <p>San Luis Obispo, CA 93407</p>
+                <p>Hours of Operation</p>
+                <p>Monday - Friday 9:00 am - 1:00 pm</p>
 
                 <a href="tel:8057562399" className={cx('phone')}>
                   805-756-2399
