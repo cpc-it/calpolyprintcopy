@@ -16,8 +16,8 @@
   position: relative;
   display: grid;
   grid-template-columns: 42% 58%;
-  width: clamp(51rem, 40vw, 76rem);
-  min-height: clamp(36rem, 23vw, 44rem);
+  width: clamp(55rem, 44vw, 76rem);
+  min-height: clamp(36rem, 26vw, 44rem);
   background: #0f5a3e;
   box-shadow: 0 3rem 8rem rgba(0, 0, 0, 0.35);
   overflow: hidden;
@@ -36,7 +36,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  padding: clamp(2.4rem, 2.4vw, 3.8rem);
+  padding: clamp(2.4rem, 2.4vw, 3rem);
   color: var(--color-white);
 }
 
