@@ -1,0 +1,198 @@
+@import 'styles/Variables';
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.8rem;
+  background: rgba(3, 33, 27, 0.76);
+  backdrop-filter: blur(3px);
+}
+
+.modal {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(38rem, 54rem) minmax(52rem, 70rem);
+  max-width: 128rem;
+  width: 100%;
+  min-height: 72rem;
+  background: #0f5a3e;
+  box-shadow: 0 3rem 8rem rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+
+.imagePanel {
+  position: relative;
+  min-height: 72rem;
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.06)),
+    url('/static/spill-the-ink.png') center center / cover no-repeat;
+}
+
+.contentPanel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 5rem;
+  color: var(--color-white);
+}
+
+.closeButton {
+  position: absolute;
+  top: 3.2rem;
+  right: 3.4rem;
+  z-index: 2;
+  border: 0;
+  background: transparent;
+  color: var(--color-white);
+  font-size: 6.4rem;
+  line-height: 1;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 3px solid var(--color-white);
+    outline-offset: 4px;
+  }
+}
+
+.eyebrow {
+  margin: 0 0 4rem;
+  color: #e4ff00;
+  font-size: 2.8rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.title {
+  margin: 0 0 5.2rem;
+  color: var(--color-white);
+  font-size: clamp(6.4rem, 7vw, 8rem) !important;
+  line-height: 0.92;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.copy {
+  // max-width: 45rem;
+  margin: 0 0 5.8rem;
+  font-size: 2.25rem;
+  line-height: 1.32;
+}
+
+.cta {
+  min-width: 23.2rem;
+  justify-content: center;
+  border: 0;
+  background: #e4ff00 !important;
+  color: #0d4333 !important;
+  padding: 2.4rem 3.2rem;
+  font-size: 1.85rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  &:hover,
+  &:focus-visible {
+    background: #0d4333 !important;
+    color: #fff !important;
+  }
+}
+
+
+@media (max-width: $breakpoint-medium) {
+  .overlay {
+    padding: 2rem;
+  }
+
+  .modal {
+    grid-template-columns: 1fr;
+    max-width: 68rem;
+    min-height: auto;
+  }
+
+  .imagePanel {
+    min-height: 33rem;
+  }
+
+  .contentPanel {
+    padding: 4.4rem 3.4rem 3.8rem;
+  }
+
+  .copy {
+    max-width: none;
+  }
+}
+
+@media (max-width: $breakpoint-small) {
+  .overlay {
+    padding: 1.2rem;
+    align-items: flex-start;
+    overflow-y: auto;
+  }
+
+  .modal {
+    margin-top: 10rem;
+  }
+
+  .imagePanel {
+    min-height: 24rem;
+  }
+
+  .closeButton {
+    top: 1.4rem;
+    right: 1.6rem;
+    font-size: 4.4rem;
+  }
+
+  .eyebrow {
+    font-size: 2rem;
+  }
+
+  .title {
+    margin-bottom: 3rem;
+    font-size: 5rem;
+  }
+
+  .eyebrow {
+    margin-bottom: 2.8rem;
+    font-size: 2.2rem;
+  }
+
+  .copy {
+    margin-bottom: 3.6rem;
+    font-size: 1.9rem;
+  }
+
+  .cta {
+    width: 100%;
+  }
+
+  .splatTop {
+    width: 17rem;
+    height: 9rem;
+  }
+
+  .splatTop::before {
+    top: 6.7rem;
+    left: 7.8rem;
+    width: 3rem;
+    height: 8rem;
+  }
+
+  .splatTop::after {
+    top: 10.5rem;
+    left: 6.5rem;
+    width: 5rem;
+    height: 5rem;
+  }
+
+  .splatBottom {
+    width: 16rem;
+    height: 11rem;
+  }
+}

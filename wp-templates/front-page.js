@@ -1,16 +1,12 @@
 import * as MENUS from 'constants/menus';
 
 import { useQuery, gql } from '@apollo/client';
-import { FaArrowRight } from 'react-icons/fa';
 import styles from 'styles/pages/_Home.module.scss';
 import {
-  EntryHeader,
   Main,
-  Button,
-  Heading,
-  CTA,
   HomepageWelcome,
   HomepageVideo,
+  HomepageSurveyPopup,
   NavigationMenu,
   SEO,
   Header,
@@ -42,12 +38,6 @@ export default function Component() {
   const navTwo = data?.footerTertiaryMenuItems?.nodes ?? [];
   const resources = data?.resourcesFooterMenuItems?.nodes ?? [];
 
-  const mainBanner = {
-    sourceUrl: '/static/banner.jpeg',
-    mediaDetails: { width: 1200, height: 600 },
-    altText: 'Portfolio Banner',
-  };
-
   return (
     <>
       <SEO title={siteTitle} description={siteDescription} />
@@ -57,6 +47,8 @@ export default function Component() {
         description={siteDescription}
         menuItems={primaryMenu}
       />
+
+      <HomepageSurveyPopup />
 
       <HomepageVideo />
 

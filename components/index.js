@@ -9,6 +9,7 @@ import Heading from './Heading';
 import Header from './Header';
 import HomepageWelcome from './HomepageWelcome';
 import HomepageVideo from './HomepageVideo';
+import HomepageSurveyPopup from './HomepageSurveyPopup';
 import HomepageIntro from './HomepageIntro';
 import HomepageNonProfit from './HomepageNonProfit';
 import HomepageStudentNeeds from './HomepageStudentNeeds';
@@ -42,6 +43,7 @@ export {
   Header,
   HomepageWelcome,
   HomepageVideo,
+  HomepageSurveyPopup,
   HomepageNonProfit,
   HomepageStudentNeeds,
   HomepageIntro,
