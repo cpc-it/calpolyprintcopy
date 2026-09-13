@@ -66,7 +66,7 @@ export default function HomepageAnswers() {
                 rel="noopener noreferrer"
                 className={styles.portalLink}
               >
-                Access the Print Portal
+                Order Printing
               </a>
             </div>
           </div>

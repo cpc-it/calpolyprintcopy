@@ -40,7 +40,7 @@ export default function HomepageOrderCta() {
               });
             }}
           >
-            Access the Print Portal
+            Order Printing
           </Button>
         </div>
       </div>

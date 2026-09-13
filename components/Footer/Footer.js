@@ -55,7 +55,7 @@ export default function Footer({ siteTitle }) {
             <div>
               <h3>Order</h3>
               <a href={orderHref} target="_blank" rel="noopener noreferrer">
-                Access Print Portal
+                Order Printing
               </a>
             </div>
 
