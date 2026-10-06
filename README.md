@@ -37,7 +37,7 @@ High-level architecture:
 
 ## Prerequisites
 
-- Node.js `20.x`
+- Node.js `22.x`
 - npm `10.x`
 - A WordPress backend reachable at `NEXT_PUBLIC_WORDPRESS_URL`
 - A WordPress setup compatible with Faust.js and the GraphQL queries used here
@@ -92,6 +92,7 @@ npm run clean         # remove .next and node_modules
 - Production start: `npm run start`
 - WP Engine build alias: `npm run wpe-build`
   - This is currently just an alias for `faust build`
+  - WP Engine selects Node.js from `engines.node` in `package.json`. This project uses `22.x`, one of the builder's supported versions (`22` and `24`).
 - Tests:
   - There is no `test` script or automated test suite configured in `package.json`
 - Deploy:
