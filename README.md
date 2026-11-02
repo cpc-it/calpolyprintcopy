@@ -16,6 +16,15 @@ The frontend currently provides:
 
 In addition to WordPress content, some homepage messaging is hardcoded in React components, including operating hours, closure notices, and the homepage CTA text.
 
+### Free Printing Promotion
+
+`components/FreePrintingBanner/FreePrintingBanner.js` is mounted once in `pages/_app.js` so the collapsible, non-modal offer is available sitewide without reopening on client-side navigation. It links to the existing PSP portal in `LANDING_PAGE.orderUrl`.
+
+- The banner initially opens expanded and supports keyboard-accessible collapse and dismissal.
+- A campaign-specific `localStorage` timestamp limits automatic appearances to once per 24 hours per browser profile, across pages, visits, and tabs. Dismissing the banner or following its account link restarts that cooldown.
+- Reloading during the cooldown keeps the banner hidden. Clearing browser storage or using another browser/device resets the preference. If storage is unavailable, the banner stays hidden and logs a warning rather than repeatedly interrupting visitors.
+- The offer automatically expires at midnight Pacific time on November 17, 2026 (including on an already-open page). Update the copy, expiration, and campaign storage key together for a future promotion.
+
 ## Stack And Architecture
 
 - Next.js 14
