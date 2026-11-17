@@ -6,7 +6,6 @@ import { FaustProvider } from '@faustwp/core';
 import 'normalize.css/normalize.css';
 import '../styles/main.scss';
 import ThemeStyles from 'components/ThemeStyles/ThemeStyles';
-import FreePrintingBanner from 'components/FreePrintingBanner/FreePrintingBanner';
 import useMediaTextReveal from 'hooks/useMediaTextReveal';
 import { GA_MEASUREMENT_ID, pageview } from 'lib/gtag';
 
@@ -47,7 +46,6 @@ export default function MyApp({ Component, pageProps }) {
       <ThemeStyles />
       <FaustProvider pageProps={pageProps}>
         <Component {...pageProps} key={router.asPath} />
-        <FreePrintingBanner />
       </FaustProvider>
     </>
   );
